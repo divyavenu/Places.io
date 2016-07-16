@@ -9,7 +9,13 @@ To get the website working, you must have an "apiData.js" file in the website fo
 
 GOOGLE_MAPS_API_KEY - (String) the Google Maps API key
 
-Example: apiData.js
+Example: apiData.j
 ```
 GOOGLE_MAPS_API_KEY = '1hfd3hjjdsd-23jk_33djfsje'; // your api key here
+```
+
+#### Backend
+To run the sample script, you'll need to first install the gdata python client (https://github.com/google/gdata-python-client) then the "main" Google API python client by running:
+```
+pip install --upgrade google-api-python-client
 ```
