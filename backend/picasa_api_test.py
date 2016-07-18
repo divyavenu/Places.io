@@ -57,6 +57,7 @@ def main():
         for photo in photos.entry:
             print '-'*45
             print 'Photo title:', photo.title.text
+            print 'Photo url:', photo.content.src
             if photo.exif.make and photo.exif.model:
                 camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
                 print '%s %s' % (photo.exif.make.text, photo.exif.model.text)
