@@ -3,9 +3,17 @@ import gdata.media
 import gdata.geo
 import webbrowser
 import httplib2
+import argparse
 from datetime import datetime, timedelta
 from oauth2client.file import Storage
 from oauth2client.client import flow_from_clientsecrets
+from oauth2client import tools
+
+try:
+    import argparse
+    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+except ImportError:
+    flags = None
 
 def OAuth2Login(client_secrets, credential_store, email):
     """
@@ -14,16 +22,25 @@ def OAuth2Login(client_secrets, credential_store, email):
     Kudos: https://github.com/MicOestergaard/picasawebuploader/blob/master/main.py
     """
     scope='https://picasaweb.google.com/data/'
-    user_agent='myapp'
+    user_agent='Places Dot IO'
 
     storage = Storage(credential_store)
     credentials = storage.get()
     if credentials is None or credentials.invalid:
+        flow = flow_from_clientsecrets(client_secrets, scope=scope)
+        flow.user_agent = user_agent
+        if flags:
+            credentials = tools.run_flow(flow, storage, flags)
+        else: # Needed only for compatibility with Python 2.6
+            credentials = tools.run(flow, storage)
+        """
+        #Old authentication style
         flow = flow_from_clientsecrets(client_secrets, scope=scope, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
         uri = flow.step1_get_authorize_url()
         webbrowser.open(uri)
         code = raw_input('Enter the authentication code: ').strip()
         credentials = flow.step2_exchange(code)
+        """
         storage.put(credentials)
 
     if (credentials.token_expiry - datetime.utcnow()) < timedelta(minutes=5):
@@ -37,41 +54,43 @@ def OAuth2Login(client_secrets, credential_store, email):
     return gd_client
 
 
-def main():
+def get_photo_url_and_geo(useremail):
     """
     Retrieves albums and photos from Google Photos via Picasa API, given a
     user's email address. Then attempts to print GPS info about each photo.
     """
     #XXX prompting for user email is clunky. Instead, should programmatically get user's email
     #after they login with Google account once we reach that point in frontend. 
-    username = raw_input("Please enter your Google email address: ")
-    gd_client = OAuth2Login("./client_secret.json", "./credential_store", username)
-    albums = gd_client.GetUserFeed(user=username)
+    gd_client = OAuth2Login("./client_secret.json", "./credential_store_" + useremail.split('@')[0], useremail)
+    albums = gd_client.GetUserFeed(user=useremail)
     # List albums
+    photos_list = []
     for album in albums.entry:
-        print 'album title: %s, number of photos: %s, id: %s' % (album.title.text,
-               album.numphotos.text, album.gphoto_id.text)
         photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % (
-                                   username, album.gphoto_id.text))
+                                   useremail, album.gphoto_id.text))
         # List photos in each album
         for photo in photos.entry:
-            print '-'*45
-            print 'Photo title:', photo.title.text
-            print 'Photo url:', photo.content.src
-            if photo.exif.make and photo.exif.model:
-                camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
-                print '%s %s' % (photo.exif.make.text, photo.exif.model.text)
+            photo_obj = {}
+            photo_obj["title"] = photo.title.text
+            photo_obj["url"] = photo.content.src
             # Print GPS information for photo if it exists
             if photo.geo.Point.pos:
                 if photo.geo.Point.pos.text is not None:
-                    print photo.geo.Point.pos.text
                     latitude = photo.geo.latitude()
                     longitude = photo.geo.longitude()
-                    print "Lat:", latitude
-                    print "Long:", longitude
-                else:
-                    print "No GPS data detected."
+                    photo_obj["latitude"] = latitude
+                    photo_obj["longitude"] = longitude
+            photos_list.append(photo_obj)
+    return photos_list
 
+def main():
+    """
+    Test driver to demonstrate functionality and basic results
+    """
+    #results = get_photo_url_and_geo(useremail="Placesdotio@gmail.com")
+    results = get_photo_url_and_geo(useremail="alex.devlin@west.cmu.edu")
+    for result in results:
+        print result
 
 if __name__=="__main__":
     main()

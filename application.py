@@ -17,3 +17,5 @@ def index():
 
 if __name__ == '__main__':
     app.run()
+    # Uncomment when running on EBS
+    #app.run(host='0.0.0.0')
