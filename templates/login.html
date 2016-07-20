@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Update client ID -->
-    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="931420069641-u2e3o61aj6roh56sv86403q20473213r.apps.googleusercontent.com">
     <title> Places.io </title>
     <link href={{ url_for('static', filename='style.css')}} rel="stylesheet">
     <link href={{ url_for('static', filename='bootstrap.min.css')}} rel="stylesheet">
@@ -20,14 +20,26 @@
     <div class="container">
         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-12" style="margin-top:200px;">
             <img src={{ url_for('static', filename='name.png')}} class="center-block">
+            <a href="#" onclick="signOut();">Sign out</a>
         </div>
        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-12 g-signin2" data-onsuccess="onSignIn" style="margin-top:50px;"></div>
+       </div>
     </div>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script>
-    function onSuccess(googleUser) {
-        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log("Full Name: " + profile.getName());
+        console.log("Given Name: " + profile.getGivenName());
+        console.log("Family Name: " + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
     }
 
     function onFailure(error) {
@@ -45,6 +57,13 @@
             'onfailure': onFailure
         });
     }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log("User signed out.");
+        });
+      }
     </script>
 </body>
 
