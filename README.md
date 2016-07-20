@@ -8,10 +8,15 @@ Using the photo’s EXIF geolocation metadata, present a user’s photo collecti
 Clone this repo to your local machine. In the top level directory, create a virtual environment:
 
 $ virtualenv PlacesIO
+
 $ source PlacesIO/bin/activate
+
 Now install the required modules:
 
 $ pip install -r requirements.txt
+
+$ pip install --upgrade google-api-python-client
+
 To play with the app right away, you can use a local database. Edit config.py by commenting out the AWS URL and uncomment this line:
 
 #### Backend
