@@ -17,7 +17,11 @@ $ pip install -r requirements.txt
 
 $ pip install --upgrade google-api-python-client
 
-To play with the app right away, you can use a local database. Edit config.py by commenting out the AWS URL and uncomment this line:
+To play with the app right away, you can use a local database. Edit config.py by commenting out the AWS URL 
+
+To run application: 
+
+$ python application.py
 
 #### Backend
 To run the sample script, you'll need to first install the gdata python client (https://github.com/google/gdata-python-client) then the "main" Google API python client by running:
