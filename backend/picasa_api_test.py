@@ -37,41 +37,42 @@ def OAuth2Login(client_secrets, credential_store, email):
     return gd_client
 
 
-def main():
+def get_photo_url_and_geo(useremail):
     """
     Retrieves albums and photos from Google Photos via Picasa API, given a
     user's email address. Then attempts to print GPS info about each photo.
     """
     #XXX prompting for user email is clunky. Instead, should programmatically get user's email
     #after they login with Google account once we reach that point in frontend. 
-    username = raw_input("Please enter your Google email address: ")
-    gd_client = OAuth2Login("./client_secret.json", "./credential_store", username)
-    albums = gd_client.GetUserFeed(user=username)
+    useremail = raw_input("Please enter your Google email address: ")
+    gd_client = OAuth2Login("./client_secret.json", "./credential_store", useremail)
+    albums = gd_client.GetUserFeed(user=useremail)
     # List albums
+    photos_list = []
     for album in albums.entry:
-        print 'album title: %s, number of photos: %s, id: %s' % (album.title.text,
-               album.numphotos.text, album.gphoto_id.text)
         photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % (
-                                   username, album.gphoto_id.text))
+                                   useremail, album.gphoto_id.text))
         # List photos in each album
         for photo in photos.entry:
-            print '-'*45
-            print 'Photo title:', photo.title.text
-            print 'Photo url:', photo.content.src
-            if photo.exif.make and photo.exif.model:
-                camera = '%s %s' % (photo.exif.make.text, photo.exif.model.text)
-                print '%s %s' % (photo.exif.make.text, photo.exif.model.text)
+            photo_obj = {}
+            photo_obj["title"] = photo.title.text
+            photo_obj["url"] = photo.content.src
             # Print GPS information for photo if it exists
             if photo.geo.Point.pos:
                 if photo.geo.Point.pos.text is not None:
-                    print photo.geo.Point.pos.text
                     latitude = photo.geo.latitude()
                     longitude = photo.geo.longitude()
-                    print "Lat:", latitude
-                    print "Long:", longitude
-                else:
-                    print "No GPS data detected."
+                    photo_obj["latitude"] = latitude
+                    photo_obj["longitude"] = longitude
+            photos_list.append(photo_obj)
 
+def main():
+    """
+    Test driver to demonstrate functionality and basic results
+    """
+    results = get_photo_url_and_geo()
+    for result in results:
+        print result
 
 if __name__=="__main__":
     main()
