@@ -22,24 +22,44 @@ function initMap() {
     fullscreenControl: true
   });
 
-function placeMarker(lat, lng, title) {
-  var marker = new google.maps.Marker({
-    position: {lat: lat, lng: lng},
-    map: map,
-    title: title
-  });
-}
-
-// Example code - auto generates one marker on the map every 2 seconds 
-// until 20 markers have been generated
-var count = 0;
-var interval = setInterval(function() {
-  placeMarker(Math.random() * 100, Math.random()*-100, 'ANOTHER MARKER');
-  count++;
-  if (count > 20) {
-    clearInterval(interval);
+  function placeMarker(lat, lng, title) {
+    var marker = new google.maps.Marker({
+      position: {lat: lat, lng: lng},
+      map: map,
+      title: title
+    });
   }
-}, 2000);
+
+  function placeMarkerWithInfoWindow(lat, lng, title, infotitle, infoimageurl) {
+    // Place a marker with title "infotitle" that renders image at url "infoimageurl"
+    var contentString = '<h1>{infotitle}</h1><br>' +
+                        '<img src="{infoimageurl}" alt="Pretty Pictures!!" style="width:300px;height:220px;">';
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    var marker = new google.maps.Marker({
+      position: {lat: lat, lng: lng},
+      map: map,
+      title: title
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+  // Example code - auto generates one marker on the map every 2 seconds 
+  // until 20 markers have been generated
+  
+  var count = 0;
+  var interval = setInterval(function() {
+    placeMarker(Math.random() * 100, Math.random()*-100, 'ANOTHER MARKER');
+    count++;
+    if (count > 20) {
+      clearInterval(interval);
+    }
+  }, 2000);
 
 }
 
