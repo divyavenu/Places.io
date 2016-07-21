@@ -87,8 +87,7 @@ def main():
     """
     Test driver to demonstrate functionality and basic results
     """
-    #results = get_photo_url_and_geo(useremail="Placesdotio@gmail.com")
-    results = get_photo_url_and_geo(useremail="alex.devlin@west.cmu.edu")
+    results = get_photo_url_and_geo(useremail="ICC.Places.io@gmail.com")
     for result in results:
         print result
 
