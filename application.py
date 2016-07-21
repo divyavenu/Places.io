@@ -10,8 +10,12 @@ app.secret_key = 'cC1YCIWOj9GgWspgNEo2'
 urls = ("/favicon.ico", "dummy")
 
 @app.route('/')
-def index():
+def login():
 	return render_template('login.html')
+
+@app.route('/map')
+def index():
+    return render_template('index.html')
 
 
 
