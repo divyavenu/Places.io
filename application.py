@@ -20,6 +20,7 @@ def index():
 
 
 if __name__ == '__main__':
+    # Change to below version when running on localhost
     app.run()
-    # Uncomment when running on EBS
+    # Change to below version when running on EBS
     #app.run(host='0.0.0.0')

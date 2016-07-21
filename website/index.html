@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="google-signin-scope" content="profile email">
+    <!-- Change "content" to your own API key if needed, if permissions from the one here aren't working -->
+    <!-- For details, see: https://developers.google.com/identity/sign-in/web/devconsole-project -->
+    <meta name="google-signin-client_id" content="931420069641-u2e3o61aj6roh56sv86403q20473213r.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>places.io</title>
@@ -9,7 +14,16 @@
   </head>
 
   <body>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log("User signed out.");
+        });
 
+        window.location.href = "/"
+      }
+    </script>
     <!-- Search box not yet functional -->
     <div id ="info">
       <div class="row">
@@ -17,6 +31,7 @@
           <input type="text" id="search" placeholder="Enter a location" class="form-control">
           <span class="input-group-btn">
             <button class="btn btn-success" id="searchbtn" type="button">Go</button>
+            <a href="#" onclick="signOut();">Sign out</a>
           </span>
         </div>
       </div>
