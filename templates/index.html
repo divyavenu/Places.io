@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="google-signin-client_id" content="931420069641-u2e3o61aj6roh56sv86403q20473213r.apps.googleusercontent.com">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>places.io</title>
@@ -23,6 +24,12 @@
       </div>
     </div> -->
     <script>
+      function onLoad() {
+        gapi.load('auth2', function() {
+          gapi.auth2.init();
+        });
+      }
+
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
@@ -30,9 +37,15 @@
         });
       }
     </script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
-    <div id="signout">
-      <a href="/" onclick="signOut();">Sign out</a>
+    <div id="navbar">
+      <table>
+        <tr>
+          <th>{{useremail}}</th>
+          <th><a href="/" onclick="signOut();">Sign out</a></th>
+        </tr>
+      </table>
     </div>
 
     <div id ="info">

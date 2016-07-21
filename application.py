@@ -15,7 +15,8 @@ def login():
 
 @app.route('/map')
 def index():
-    return render_template('index.html')
+    useremail = request.args.get('useremail')
+    return render_template('index.html', useremail=useremail)
 
 
 

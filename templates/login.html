@@ -40,7 +40,7 @@
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
 
-        window.location.href = "/map"
+        window.location.href = "/map?useremail=" + profile.getEmail();
     }
 
     function onFailure(error) {
