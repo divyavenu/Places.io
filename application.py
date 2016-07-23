@@ -22,6 +22,7 @@ def login():
 @app.route('/map')
 def index():
     useremail = request.args.get('useremail')
+    photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
     return render_template('index.html', useremail=useremail)
 
 
