@@ -74,10 +74,13 @@ def get_photo_url_and_geo(useremail):
         photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % (
                                    useremail, album.gphoto_id.text))
         # List photos in each album
+        photocount = 0
         for photo in photos.entry:
             photo_obj = {}
-            photo_obj["title"] = photo.title.text
-            photo_obj["url"] = photo.content.src
+            photo_obj["title"] = "PHOTO " + str(photocount)
+            photocount += 1
+            photo_obj["infotitle"] = photo.title.text
+            photo_obj["infourl"] = photo.content.src
             # Print GPS information for photo if it exists
             if photo.geo.Point.pos:
                 if photo.geo.Point.pos.text is not None:
@@ -85,8 +88,9 @@ def get_photo_url_and_geo(useremail):
                     longitude = photo.geo.longitude()
                     photo_obj["latitude"] = latitude
                     photo_obj["longitude"] = longitude
-            photos_list.append(photo_obj)
-    return photos_list
+                    # Only allow photo to be displayed on map if it has geo data
+                    photos_list.append(photo_obj)
+        return photos_list
 
 def main():
     """

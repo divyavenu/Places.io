@@ -118,6 +118,14 @@
             infowindow.open(map, marker);
           });
         }
+
+        {% for photo in photolist %}
+          placeMarkerWithInfoWindow({{photo.latitude}}, 
+                                    {{photo.longitude}},
+                                    "{{photo.title}}",
+                                    "{{photo.infotitle}}",
+                                    "{{photo.infourl}}");
+        {% endfor %}
       }
     </script>
     <script async defer
