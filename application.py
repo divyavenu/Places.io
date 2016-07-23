@@ -2,6 +2,12 @@ from flask import Flask, render_template, request
 from application import db
 from application.models import Data
 
+import sys, os
+includepath = os.path.abspath(os.path.join('./','backend'))
+sys.path.append(includepath)
+import picasa_photo_import
+
+
 # Elastic Beanstalk initalization
 app = Flask(__name__)
 app.debug=True
