@@ -7,7 +7,6 @@ includepath = os.path.abspath(os.path.join('./','backend'))
 sys.path.append(includepath)
 import picasa_photo_import
 
-
 # Elastic Beanstalk initalization
 app = Flask(__name__)
 app.debug=True
@@ -23,8 +22,9 @@ def login():
 def index():
     useremail = request.args.get('useremail')
     photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
-    return render_template('index.html', useremail=useremail)
-
+    return render_template('index.html',
+    					   useremail=useremail,
+    					   photolist=photolist)
 
 
 if __name__ == '__main__':
