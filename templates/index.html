@@ -99,9 +99,10 @@
           });
         }
 
-        function placeMarkerWithInfoWindow(lat, lng, title, infotitle, infoimageurl) {
+        function placeMarkerWithInfoWindow(lat, lng, timestamp, title, infotitle, infoimageurl) {
           // Place a marker with title "infotitle" that renders image at url "infoimageurl"
           var contentString = `<h1>${infotitle}</h1><br>` +
+                              `<h3>${timestamp}</h3><br>` +
                               `<img src="${infoimageurl}" alt="Pretty Pictures!!" style="width:300px;height:220px;">`;
 
           var infowindow = new google.maps.InfoWindow({
@@ -122,6 +123,7 @@
         {% for photo in photolist %}
           placeMarkerWithInfoWindow({{photo.latitude}}, 
                                     {{photo.longitude}},
+                                    "{{photo.timestamp}}",
                                     "{{photo.title}}",
                                     "{{photo.infotitle}}",
                                     "{{photo.infourl}}");

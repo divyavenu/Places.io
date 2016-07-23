@@ -81,7 +81,17 @@ def get_photo_url_and_geo(useremail):
             photocount += 1
             photo_obj["infotitle"] = photo.title.text
             photo_obj["infourl"] = photo.content.src
-            # Print GPS information for photo if it exists
+            # Add time if it exists. Use 2 formats, since not sure which 
+            # will be easier to handle at the front-end later.
+            if photo.exif.time is not None:
+                epochtime = float(photo.exif.time.text)/1000
+                photodt = datetime.fromtimestamp(epochtime)
+                photo_obj["timestamp"] = photodt.strftime("%B %d, %Y")
+                photo_obj["epochtime"] = epochtime
+            else:
+                photo_obj["timestamp"] = "No Time Data Found"
+                photo_obj["epochtime"] = "No Time Data Found"
+            # Add GPS information for photo if it exists
             if photo.geo.Point.pos:
                 if photo.geo.Point.pos.text is not None:
                     latitude = photo.geo.latitude()
