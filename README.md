@@ -21,6 +21,8 @@ To play with the app right away, you can use a local database. Edit config.py by
 
 To run application: 
 
+$ python db_create.py
+
 $ python application.py
 
 #### Backend
