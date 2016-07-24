@@ -1,5 +1,6 @@
 config.pyc
 PlacesIO
 application/__init__.pyc
+backend/picasa_photo_import.pyc
 models.pyc
 flask-aws
