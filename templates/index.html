@@ -5,6 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>places.io</title>
+    <script src={{ url_for('static', filename='markerclusterer.js') }}></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href={{ url_for('static', filename='style.css')}} rel="stylesheet">
     <link href={{ url_for('static', filename='bootstrap.min.css')}} rel="stylesheet">
@@ -69,6 +70,8 @@
     <script>
       function initMap() {
         
+        var markers = [];
+        
         var map = new google.maps.Map(document.getElementById('map'), {
           // Map centers on the the Carnegie Mellon Silicon Valley Campus
           zoom: 3,
@@ -111,13 +114,14 @@
 
           var marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
-            map: map,
             title: title
           });
 
           marker.addListener('click', function() {
             infowindow.open(map, marker);
           });
+
+          markers.push(marker);
         }
 
         {% for photo in photolist %}
@@ -128,6 +132,8 @@
                                     "{{photo.infotitle}}",
                                     "{{photo.infourl}}");
         {% endfor %}
+
+        var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'static/images/m'});
       }
     </script>
     <script async defer

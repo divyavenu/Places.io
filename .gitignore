@@ -2,5 +2,6 @@ config.pyc
 PlacesIO
 application/__init__.pyc
 backend/picasa_photo_import.pyc
+backend/credential_store_*
 models.pyc
 flask-aws
