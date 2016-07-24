@@ -5,6 +5,8 @@ import webbrowser
 import httplib2
 import argparse
 import sys, os
+from application import db
+from application.models import Photo
 from datetime import datetime, timedelta
 from oauth2client.file import Storage
 from oauth2client.client import flow_from_clientsecrets
@@ -100,6 +102,9 @@ def get_photo_url_and_geo(useremail):
                     photo_obj["longitude"] = longitude
                     # Only allow photo to be displayed on map if it has geo data
                     photos_list.append(photo_obj)
+                    photo = Photo(useremail,photo_obj["title"],photo_obj["infotitle"],photo_obj["infourl"],photo_obj["latitude"],photo_obj["longitude"], photo_obj["timestamp"],photo_obj["epochtime"])
+                    db.session.add(photo)
+                    db.session.commit()
         return photos_list
 
 def main():

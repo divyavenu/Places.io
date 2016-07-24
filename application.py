@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from application import db
-from application.models import Data
+from application.models import Photo
 
 import sys, os
 includepath = os.path.abspath(os.path.join('./','backend'))

@@ -21,7 +21,12 @@ To play with the app right away, you can use a local database. Edit config.py by
 
 To run application: 
 
+$ python db_create.py
+
 $ python application.py
+
+#### Create local database for testing
+Create a mysql database called placesDB on local machine
 
 #### Backend
 To run the sample script, you'll need to first install the gdata python client (https://github.com/google/gdata-python-client) then the "main" Google API python client by running:
