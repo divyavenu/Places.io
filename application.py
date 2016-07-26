@@ -23,10 +23,6 @@ def index():
 
     useremail = request.args.get('useremail')
     photolist = Photo.query.filter_by(useremail = useremail).all()
-    
-
-    for i in photolist:
-        print i.useremail
 
     if not photolist:
         photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
