@@ -22,11 +22,8 @@ def login():
 def index():
 
     useremail = request.args.get('useremail')
-    photolist = Photo.query.filter_by(useremail = useremail).all()
+    photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
 
-    if not photolist:
-        photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
-    
     return render_template('index.html',
     					   useremail=useremail,
     					   photolist=photolist)
