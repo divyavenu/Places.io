@@ -13,9 +13,40 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
     <script>
-    $( function() {
-      $( "#datepicker" ).datepicker();
-    } );
+      $(function() {
+        $("#earliestdatepicker" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          onClose: function() {
+            filterPhotos();
+          }
+        });
+        $("#latestdatepicker" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          onClose: function() {
+            filterPhotos();
+          }
+        });
+      });
+
+    function filterPhotos() {
+      // Step 1: Get dates and map from HTML elements
+      var earliestDate = $('#earliestdatepicker').datepicker('getDate');;
+      var latestDate = $('#latestdatepicker').datepicker('getDate');;
+      if(earliestDate != null) {
+        alert("Earliest date selected is : " + $.datepicker.formatDate("mm-dd-yy", earliestDate));
+      }
+      if(latestDate != null) {
+        alert("Latest date selected is : " + $.datepicker.formatDate("mm-dd-yy", latestDate));
+      }
+      // Step 2: Wipe all markers from map
+
+      // Step 3: Make DB call to get all photos in date range
+
+      // Step 4: Call placeMarkerWithInfoWindow for each photo from DB
+
+      }
     </script>
   </head>
 
@@ -74,7 +105,11 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="col-lg-10 col-lg-offset-1 col-xs-12" style="margin-bottom:20px;">
-          <p>Date: <input type="text" id="datepicker"></p>
+          <p>
+            Earliest Date: <input type="text" id="earliestdatepicker">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            Latest Date: <input type="text" id="latestdatepicker">
+          </p>
         </div>
       </div>
     </div>
