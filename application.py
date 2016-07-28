@@ -30,6 +30,7 @@ def index():
         earliestDateEpoch, latestDateEpoch = photo_filterer.convert_to_epoch(earliestDate, latestDate)
         photolist = (Photo.query.filter_by(useremail = useremail)
                                 .filter(Photo.epochtime >= earliestDateEpoch)
+                                .filter(Photo.epochtime <= latestDateEpoch)
                     )
     else:    
         photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
