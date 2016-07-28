@@ -6,8 +6,8 @@ class Photo(db.Model):
 	title = db.Column(db.String(75))
 	infotitle = db.Column(db.String(75))
 	infourl = db.Column(db.String(1600))
-	latitude = db.Column(db.Numeric)
-	longitude = db.Column(db.Numeric)
+	latitude = db.Column(db.Float)
+	longitude = db.Column(db.Float)
 	timestamp = db.Column(db.String(50))
 	epochtime = db.Column(db.Float)
 

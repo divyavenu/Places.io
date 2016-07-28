@@ -99,6 +99,13 @@
       var markers = [];
       var useremail = '{{useremail}}';
 
+      function clearOverlays() {
+        for (var i = 0; i < markers.length; i++ ) {
+          markers[i].setMap(null);
+        }
+        markers.length = 0;
+      }
+
       function placeMarker(map, lat, lng, title) {
         var marker = new google.maps.Marker({
           position: {lat: lat, lng: lng},
@@ -141,17 +148,16 @@
           redirectURL += "&latestDate=" + $.datepicker.formatDate("mm-dd-yy", latestDate);
         }
         // Step 2: Wipe all markers from map
-
+        clearOverlays();
         // Step 3: Make DB call to get all photos in date range
 
         // Step 4: Call placeMarkerWithInfoWindow for each photo from DB
 
-        // XXX hackish workaround: Can accomplish 2 and 3 by redirecting to "/map" then update
+        // XXX hackish workaround: Can accomplish 3 and 4 by redirecting to "/map" then update
         // route in application.py to receive earliestDate and latestDate as arguments. Probably
         // a better way to do it than that, however.
 
         window.location.href = redirectURL;
-
       }
 
       function initMap() {

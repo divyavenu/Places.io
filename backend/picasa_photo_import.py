@@ -102,9 +102,15 @@ def get_photo_url_and_geo(useremail):
                     photo_obj["longitude"] = longitude
                     # Only allow photo to be displayed on map if it has geo data
                     photos_list.append(photo_obj)
-                    photo = Photo(useremail,photo_obj["title"],photo_obj["infotitle"],photo_obj["infourl"],photo_obj["latitude"],photo_obj["longitude"], photo_obj["timestamp"],photo_obj["epochtime"])
-                    db.session.add(photo)
-                    db.session.commit()
+                    photo = Photo(useremail, photo_obj["title"],
+                                  photo_obj["infotitle"], photo_obj["infourl"],
+                                  photo_obj["latitude"], photo_obj["longitude"],
+                                  photo_obj["timestamp"],photo_obj["epochtime"])
+                    # Check if DB object already exists before we save it
+                    exists = db.session.query(Photo.id).filter_by(infourl=photo_obj["infourl"]).scalar() is not None
+                    if not exists:
+                        db.session.add(photo)
+                        db.session.commit()
         return photos_list
 
 def main():
