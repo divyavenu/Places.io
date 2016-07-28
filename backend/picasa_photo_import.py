@@ -64,8 +64,8 @@ def get_photo_url_and_geo(useremail):
     Retrieves albums and photos from Google Photos via Picasa API, given a
     user's email address. Then attempts to print GPS info about each photo.
     """
-    #XXX prompting for user email is clunky. Instead, should programmatically get user's email
-    #after they login with Google account once we reach that point in frontend. 
+    # Will prompt user to allow Picasa API access if a credential_store does
+    # not yet exist for them on our server
     gd_client = OAuth2Login(os.path.join(SECRETPATH, "client_secret.json"),
                             os.path.join(SECRETPATH, "credential_store_" + useremail.split('@')[0]),
                             useremail)
