@@ -25,7 +25,12 @@ def index():
     useremail = request.args.get('useremail')
     earliestDate = request.args.get('earliestDate')
     latestDate = request.args.get('latestDate')
-    photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
+    if earliestDate is not None or latestDate is not None:
+        earliestDateEpoch, latestDateEpoch = photo_filterer.convert_to_epoch(earliestDate, latestDate)
+        photolist = (Photo.query.filter_by(useremail = useremail)
+                    )
+    else:    
+        photolist = picasa_photo_import.get_photo_url_and_geo(useremail)
 
     return render_template('index.html',
     					   useremail=useremail,
