@@ -179,13 +179,15 @@
         });
 
         {% for photo in photolist %}
-          placeMarkerWithInfoWindow(map,
-                                    {{photo.latitude}}, 
-                                    {{photo.longitude}},
-                                    "{{photo.timestamp}}",
-                                    "{{photo.title}}",
-                                    "{{photo.infotitle}}",
-                                    "{{photo.infourl}}");
+          {% if photo.latitude is not none and photo.longitude is not none %}
+            placeMarkerWithInfoWindow(map,
+                                      {{photo.latitude}}, 
+                                      {{photo.longitude}},
+                                      "{{photo.timestamp}}",
+                                      "{{photo.title}}",
+                                      "{{photo.infotitle}}",
+                                      "{{photo.infourl}}");
+          {% endif %}
         {% endfor %}
 
         var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'static/images/m'});
