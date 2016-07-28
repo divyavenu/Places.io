@@ -19,6 +19,10 @@ $ pip install --upgrade google-api-python-client
 
 To play with the app right away, you can use a local database. Edit config.py by commenting out the AWS URL 
 
+Modify config.py to include local/RDS database credentials in the format: Replace username and password
+'mysql://username:password@localhost/db_name'
+
+
 To run application: 
 
 $ python db_create.py
