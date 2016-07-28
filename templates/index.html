@@ -93,8 +93,6 @@
     </div>
 
     <div id="map"></div>
-    <!--<script src={{ url_for('static', filename='apiData.js') }}></script>-->
-    <!--<script src={{ url_for('static', filename='map.js') }}></script>-->
     <script>
       var markers = [];
       var useremail = '{{useremail}}';
@@ -147,16 +145,10 @@
         if(latestDate != null) {
           redirectURL += "&latestDate=" + $.datepicker.formatDate("mm-dd-yy", latestDate);
         }
-        // Step 2: Wipe all markers from map
+        // Step 2: Wipe all markers from map, out of paranoia
         clearOverlays();
-        // Step 3: Make DB call to get all photos in date range
-
-        // Step 4: Call placeMarkerWithInfoWindow for each photo from DB
-
-        // XXX hackish workaround: Can accomplish 3 and 4 by redirecting to "/map" then update
-        // route in application.py to receive earliestDate and latestDate as arguments. Probably
-        // a better way to do it than that, however.
-
+        // Step 3: Redirect to "/map" with earliestDate and latestDate arguments.
+        // This causes the path to enable filtering
         window.location.href = redirectURL;
       }
 

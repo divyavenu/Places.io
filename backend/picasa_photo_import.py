@@ -38,14 +38,6 @@ def OAuth2Login(client_secrets, credential_store, email):
             credentials = tools.run_flow(flow, storage, flags)
         else: # Needed only for compatibility with Python 2.6
             credentials = tools.run(flow, storage)
-        """
-        #Old authentication style
-        flow = flow_from_clientsecrets(client_secrets, scope=scope, redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-        uri = flow.step1_get_authorize_url()
-        webbrowser.open(uri)
-        code = raw_input('Enter the authentication code: ').strip()
-        credentials = flow.step2_exchange(code)
-        """
         storage.put(credentials)
 
     if (credentials.token_expiry - datetime.utcnow()) < timedelta(minutes=5):
