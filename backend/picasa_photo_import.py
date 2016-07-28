@@ -97,7 +97,7 @@ def get_photo_url_and_geo(useremail):
                     photo = Photo(useremail, photo_obj["title"],
                                   photo_obj["infotitle"], photo_obj["infourl"],
                                   photo_obj["latitude"], photo_obj["longitude"],
-                                  photo_obj["timestamp"],photo_obj["epochtime"])
+                                  photo_obj["timestamp"], photo_obj["epochtime"])
                     # Check if DB object already exists before we save it
                     exists = db.session.query(Photo.id).filter_by(infourl=photo_obj["infourl"]).scalar() is not None
                     if not exists:
