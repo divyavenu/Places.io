@@ -29,24 +29,6 @@
           }
         });
       });
-
-    function filterPhotos() {
-      // Step 1: Get dates and map from HTML elements
-      var earliestDate = $('#earliestdatepicker').datepicker('getDate');;
-      var latestDate = $('#latestdatepicker').datepicker('getDate');;
-      if(earliestDate != null) {
-        alert("Earliest date selected is : " + $.datepicker.formatDate("mm-dd-yy", earliestDate));
-      }
-      if(latestDate != null) {
-        alert("Latest date selected is : " + $.datepicker.formatDate("mm-dd-yy", latestDate));
-      }
-      // Step 2: Wipe all markers from map
-
-      // Step 3: Make DB call to get all photos in date range
-
-      // Step 4: Call placeMarkerWithInfoWindow for each photo from DB
-
-      }
     </script>
   </head>
 
@@ -118,10 +100,58 @@
     <!--<script src={{ url_for('static', filename='apiData.js') }}></script>-->
     <!--<script src={{ url_for('static', filename='map.js') }}></script>-->
     <script>
+      var markers = [];
+
+      function placeMarker(map, lat, lng, title) {
+        var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map,
+          title: title
+        });
+      }
+
+      function placeMarkerWithInfoWindow(map, lat, lng, timestamp, title, infotitle, infoimageurl) {
+        // Place a marker with title "infotitle" that renders image at url "infoimageurl"
+        var contentString = `<h1>${infotitle}</h1><br>` +
+                            `<h3>${timestamp}</h3><br>` +
+                            `<img src="${infoimageurl}" alt="Pretty Pictures!!" style="width:300px;height:220px;">`;
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          title: title
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+
+        markers.push(marker);
+      }
+
+      function filterPhotos() {
+        // Step 1: Get dates and map from HTML elements
+        var earliestDate = $('#earliestdatepicker').datepicker('getDate');;
+        var latestDate = $('#latestdatepicker').datepicker('getDate');;
+        if(earliestDate != null) {
+          alert("Earliest date selected is : " + $.datepicker.formatDate("mm-dd-yy", earliestDate));
+        }
+        if(latestDate != null) {
+          alert("Latest date selected is : " + $.datepicker.formatDate("mm-dd-yy", latestDate));
+        }
+        // Step 2: Wipe all markers from map
+
+        // Step 3: Make DB call to get all photos in date range
+
+        // Step 4: Call placeMarkerWithInfoWindow for each photo from DB
+
+      }
+
       function initMap() {
-        
-        var markers = [];
-        
+
         var map = new google.maps.Map(document.getElementById('map'), {
           // Map centers on the the Carnegie Mellon Silicon Valley Campus
           zoom: 3,
@@ -144,38 +174,9 @@
           fullscreenControl: true
         });
 
-        function placeMarker(lat, lng, title) {
-          var marker = new google.maps.Marker({
-            position: {lat: lat, lng: lng},
-            map: map,
-            title: title
-          });
-        }
-
-        function placeMarkerWithInfoWindow(lat, lng, timestamp, title, infotitle, infoimageurl) {
-          // Place a marker with title "infotitle" that renders image at url "infoimageurl"
-          var contentString = `<h1>${infotitle}</h1><br>` +
-                              `<h3>${timestamp}</h3><br>` +
-                              `<img src="${infoimageurl}" alt="Pretty Pictures!!" style="width:300px;height:220px;">`;
-
-          var infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-
-          var marker = new google.maps.Marker({
-            position: {lat: lat, lng: lng},
-            title: title
-          });
-
-          marker.addListener('click', function() {
-            infowindow.open(map, marker);
-          });
-
-          markers.push(marker);
-        }
-
         {% for photo in photolist %}
-          placeMarkerWithInfoWindow({{photo.latitude}}, 
+          placeMarkerWithInfoWindow(map,
+                                    {{photo.latitude}}, 
                                     {{photo.longitude}},
                                     "{{photo.timestamp}}",
                                     "{{photo.title}}",

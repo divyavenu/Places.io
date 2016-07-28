@@ -6,7 +6,7 @@
 
 # Uncomment the line below if you want to work with a local DB
 # 'mysql://username:password@localhost/db_name', db_name for our project is PlacesDB in my local system
-SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/PlacesDB'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:devlin112@localhost/PlacesDB'
 
 SQLALCHEMY_POOL_RECYCLE = 3600
 
